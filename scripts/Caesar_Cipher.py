@@ -1,5 +1,3 @@
-
-
 def caesarCipher(mode: str, key: int, message):
     SYMBOLS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 !?.'
     translated = ''
@@ -19,9 +17,8 @@ def caesarCipher(mode: str, key: int, message):
 
             elif translatedIndex < 0:		
                 translatedIndex = translatedIndex + len(SYMBOLS)
-
+                
             translated = translated + SYMBOLS[translatedIndex]
         else:
             translated = translated + symbol
-
     return translated

@@ -7,7 +7,6 @@ from cv2 import split
 sys.path.append("/TelegramBotAio/scripts")
 from Caesar_Cipher import caesarCipher
 
-SYMBOLS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 !?.'
 class FSMTest(StatesGroup):
     metod = State()
     key = State()  
@@ -23,20 +22,25 @@ async def code_metod(message: types.Message, state: FSMContext):
             data['metod'] = message.text
             await message.reply('Введи ключ!', reply_markup=kb_cryptographyKey)
             await FSMTest.next()
+
         elif message.text == 'decrypt':
             data['metod'] = message.text
             await message.reply('Введи ключ!', reply_markup=kb_cryptographyKey)
             await FSMTest.next()
+        
         else:
             await message.reply('Вы должны выбрать encrypt (зашифровать) или decrypt (разшифровать)')
 
 async def code_key(message: types.Message, state: FSMContext):
     if message.text.isnumeric() == False:
         await message.reply('Ключем должна быть цифра!')
+
     elif int(message.text) > 66:
         await message.reply('Ключ должен быть от 1 до 66')
+
     elif int(message.text) < 0:
         await message.reply('Ключ должен быть от 1 до 66')
+
     else: 
         async with state.proxy() as data:
             data['key'] = message.text
@@ -46,6 +50,7 @@ async def code_key(message: types.Message, state: FSMContext):
 async def code_text(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['text'] = message.text
+
     async with state.proxy() as data:
         await message.answer(caesarCipher(str(data['metod']), int(data['key']), data['text']), reply_markup=kb_client)
     await state.finish()
@@ -54,6 +59,7 @@ async def cancel_handler(message: types.Message, state: FSMContext):
     current_state = await state.get_state()
     if current_state is None:
         return
+
     else:
         await state.finish()
         await message.reply('Done')

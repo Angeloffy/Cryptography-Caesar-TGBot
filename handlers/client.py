@@ -1,5 +1,6 @@
 from aiogram import types, Dispatcher
 from keyboards import kb_client
+
 async def ping(message: types.Message):
     await message.answer("pong".format(message.from_user))
 
